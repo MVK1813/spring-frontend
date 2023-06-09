@@ -36,26 +36,27 @@ const Home = () => {
 
   return (
     <div className="home-con">
-      <h1>SignIn !</h1>
+      <h1 style={{textAlign:"center"}}>Sign In !</h1>
+      <div className="raj">
       <form className="container" onSubmit={handlesubmit}>
         <div>
-          <label className="label">Email </label>
+          <label className="label">Email :</label>
           <input type="text" required onChange={emailChange}></input>
         </div>
         <div>
           <label className="label" required>
-            Password
+            Password :
           </label>
           <input type="password" required onChange={passwordChange}></input>
         </div>
         <div>
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className="btn btn-primary" style={{marginLeft:"150px"}}>
             Login
           </button>
         </div>
       </form>
-
-      <button className="btn btn-outline-primary" onClick={registerPage}>
+      </div>
+      <button className="btn btn-outline-primary" onClick={registerPage} style={{marginLeft:"130px",marginTop:"10px"}}>
         Create Account
       </button>
     </div>

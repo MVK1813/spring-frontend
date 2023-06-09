@@ -32,7 +32,7 @@ const Register = () => {
 
   return (
     <div className="home-con">
-      <h1>SignUp !</h1>
+      <h1 style={{textAlign:"center"}}>SignUp !</h1>
       <form className="container" onSubmit={handlesubmit}>
         <div>
           <label className="label">Name </label>
@@ -50,7 +50,7 @@ const Register = () => {
           <input type="password" required onChange={passwordChange}></input>
         </div>
         <div className="login-div-con">
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className="btn btn-primary" style={{marginLeft:"140px", marginTop:"10px"}}>
             Register
           </button>
         </div>
