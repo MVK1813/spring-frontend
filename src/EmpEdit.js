@@ -13,6 +13,7 @@ const EmpEdit = () => {
   const [department, departmentchange] = useState("");
   const [active, activechange] = useState(true);
   const [validation, valchange] = useState(false);
+  const [image, imageChange] = useState("");
 
   const navigate = useNavigate();
 
@@ -28,7 +29,7 @@ const EmpEdit = () => {
     dobchange(res.data.dob);
     salarychange(res.data.salary);
     departmentchange(res.data.department);
-
+    imageChange(res.data.image);
     console.log(res.data.dob);
   };
 
@@ -41,14 +42,51 @@ const EmpEdit = () => {
 
   const handlesubmit = async (e) => {
     e.preventDefault();
-    const empdata = { id, name, sex, dob, salary, department, active };
+    const empdata = { id, name, sex, dob, salary, department, active , image };
 
     await axios.put(`http://localhost:8082/editemployee/${empid}`, empdata);
     alert("Saved successfully.");
     navigate("/employees");
   };
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+  
+    reader.onload = (event) => {
+      const base64String = event.target.result.split(",")[1];
+      imageChange(base64String);
+    };
+  
+    reader.onerror = (error) => {
+      console.log("Error: ", error);
+    };
+  
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  };
+
+  
+  const renderUserImage = () => {
+    if (image) {
+      return (
+        <img
+          src={`data:image/jpeg;base64,${image}`}
+          alt="User"
+          className="user-image"
+          style={{height:60, width:60}}
+        />
+      );
+    }
+    return null;
+  };
 
   return (
+    <div>
+       <nav style={{marginLeft:"-1100px",backgroundColor:"white"}} >
+          <Link to = "/employees"style={{marginLeft:"-1100px",backgroundColor:"white"}} >Home</Link>
+          <Link to = "/employees/employee/create" style={{margin:"20px",backgroundColor:"white"}}>Add</Link>
+        </nav>
     <div>
       <div className="row">
         <div className="offset-lg-3 col-lg-6">
@@ -80,6 +118,20 @@ const EmpEdit = () => {
                       ></input>
                     </div>
                   </div>
+                  <div className="col-lg-12">
+                  <div className="form-group">
+                    <label>Profile Photo</label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="form-control"
+                    />
+                    {renderUserImage()}
+                    <small className="form-text text-muted">Choose a profile photo.</small>
+                  </div>
+                </div>
+                  
                   <div className="form-group radio-div">
                     <label>Sex: </label>
                     <input
@@ -159,6 +211,7 @@ const EmpEdit = () => {
           </form>
         </div>
       </div>
+    </div>
     </div>
   );
 };

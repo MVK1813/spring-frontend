@@ -32,8 +32,48 @@ const EmpListing = () => {
     empdatachange(res.data);
   };
 
+  const renderUserImage = (item) => {
+    if (item.image && typeof item.image === 'string') {
+      const blobData = atob(item.image);
+      const arrayBuffer = new ArrayBuffer(blobData.length);
+      const uintArray = new Uint8Array(arrayBuffer);
+      for (let i = 0; i < blobData.length; i++) {
+        uintArray[i] = blobData.charCodeAt(i);
+      }
+      const blob = new Blob([arrayBuffer], { type: 'image/jpeg' });
+  
+      const base64String = URL.createObjectURL(blob);
+      return (
+        <img
+          src={base64String}
+          alt="User"
+          className="user-image"
+        //   alt="User" 
+          style={{height:60, width:60,borderRadius:"50%"}}
+        />
+      );
+    } else if (item.image && Array.isArray(item.image)) {
+      const base64String = btoa(String.fromCharCode.apply(null, item.image));
+      return (
+        <img
+          src={`data:image/jpeg;base64,${base64String}`}
+          alt="User"
+          className="user-image custom-image-style"
+          style={{height:60, width:60,borderRadius:"50%"}}
+        />
+      );
+    }
+    return null;
+  };
   return (
+    <div>
+    <nav style={{marginLeft:"-1100px",backgroundColor:"black"}} >
+          <Link to = "/employees"style={{color:"yellow"}} >Home</Link>
+          <Link to = "/employees/employee/create" style={{margin:"20px",color:"yellow"}}>Add</Link>
+        </nav>
+      
     <div className="container">
+       
       <div className="card">
         <div className="card-title">
           <h2>Employee Listing</h2>
@@ -57,6 +97,7 @@ const EmpListing = () => {
               <tr>
                 <td>ID</td>
                 <td>Name</td>
+                <td>Image</td>
                 <td>Sex</td>
                 <td>DOB</td>
                 <td>Salary</td>
@@ -66,10 +107,11 @@ const EmpListing = () => {
             </thead>
             <tbody>
               {empdata &&
-                empdata.map((item) => (
+                empdata.map((item,index) => (
                   <tr key={item.id}>
-                    <td>{item.id}</td>
+                    <td>{index+1}</td>
                     <td>{item.name}</td>
+                    <td>{renderUserImage(item)}</td>
                     <td>{item.sex}</td>
                     <td>{item.dob}</td>
                     <td>{item.salary}</td>
@@ -98,6 +140,7 @@ const EmpListing = () => {
           </table>
         </div>
       </div>
+    </div>
     </div>
   );
 };
